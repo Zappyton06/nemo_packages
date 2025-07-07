@@ -12,10 +12,15 @@ def generate_launch_description():
     description_pkg = 'nemo_description'
     bringup_pac = "nemo_bringup"
 
-    xacro_path = '/home/zappington/submarine_ws/src/nemo_description/urdf/nemo.urdf.xacro'  # Replace with the actual absolute path    # Run xacro to generate robot description
-
+    #xacro_path = '/home/zappington/submarine_ws/src/nemo_description/urdf/nemo.urdf.xacro'  # Replace with the actual absolute path    # Run xacro to generate robot description
+    
     #xacro_path = '/home/zappington/submarine_ws/src/nemo_description/urdf/nemo_sdf.sdf'
 
+    xacro_path = PathJoinSubstitution([
+        FindPackageShare(description_pkg),
+        'urdf',
+        'nemo.urdf.xacro'
+    ])
     
 
     rviz_config_path = PathJoinSubstitution([
