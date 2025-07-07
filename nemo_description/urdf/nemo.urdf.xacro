@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<robot name="nemo_auv" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="ns" value="nemo_auv"/>
+    <xacro:include filename="base_link.xacro"/>
+    <xacro:include filename="robot_hydrodynamic.xacro"/>
+    <xacro:include filename="thruster_cw.xacro"/>
+    <xacro:include filename="thruster_ccw.xacro"/>
+
+
+</robot>
