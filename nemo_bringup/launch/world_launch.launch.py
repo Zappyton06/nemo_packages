@@ -9,7 +9,13 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
-    world_path = '/home/zappington/submarine_ws/src/nemo_bringup/world/world_side.sdf'
+    bringup_package = "nemo_bringup"
+
+    world_path = PathJoinSubstitution([
+        FindPackageShare(bringup_package),
+        'world',
+        'world_side.sdf'
+    ])
 
     return LaunchDescription([
         ExecuteProcess(
