@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="my_robot">
 
     <link name="base_link">
-        <pose xyz="0 0 0.15" rpy="0 0 0" />
+        <!--<pose xyz="0 0 0.15" rpy="0 0 0" />-->
         <visual>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>     
             <geometry>
@@ -10,19 +10,26 @@
             </geometry>
         </visual>
         <inertial>
-            <mass value="21.655336950308023"/>
-            <origin xyz = "0 0 -0.15" rpy = "0 0 0 "/>
-            <inertia ixx="0.31520658221610337" ixy="0.01" ixz="0.01" iyy="0.5612468130234098" iyz="0.01" izz="0.5976589117638781"/>
+            <mass value="17.655"/>
+            <origin xyz = "0.0 0.0 -0.075" rpy = "0 0 0 "/>
+            <inertia ixx="0.026" ixy="0.0" ixz="0.0"
+                 iyy="0.047" iyz="0.0"
+                 izz="0.052"/>
+            <!--<inertia ixx="0.31520658221610337" ixy="0.0" ixz="0.0" iyy="0.5612468130234098" iyz="0.0" izz="0.5976589117638781"/>-->
         </inertial>
         <collision>
-            <origin xyz="0.0 0.0 0.15" rpy="0.0 0.0 0.0"/>
+            <origin xyz="0.0 0.0 -0.048" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <box size ="0.5 0.4 0.3"/>
+                <box size="0.460 0.2025 0.1920"/>
             </geometry>
         </collision>
         
-        
-
+        <!--<gazebo reference="base_link">
+            <velocity_decay>
+                <linear>5.0</linear>
+                <angular>2.0</angular>
+            </velocity_decay>
+        </gazebo>-->
         
     </link>
 </robot>
