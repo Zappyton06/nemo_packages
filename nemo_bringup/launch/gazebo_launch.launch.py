@@ -50,14 +50,14 @@ def generate_launch_description():
             executable='joint_state_publisher'
         ),
 
-        # 3. Spawn the robot in Gazebo
+        # 3. Spawn the robot in Gazebo at 1.5 - 2m below the fluid level to avoid seg faults
         Node(
             package='ros_gz_sim',
             executable='create',
             name='spawn_nemo',
             arguments=[
                 '-name', 'nemo_auv',
-                '-x', '0', '-y', '0', '-z', '0',
+                '-x', '0', '-y', '0', '-z', '-2',
                 '-topic', '/robot_description'
             ],
             output='screen',
