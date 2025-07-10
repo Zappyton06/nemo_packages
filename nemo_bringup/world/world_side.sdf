@@ -8,7 +8,7 @@
 
 
     <physics name="10ms" type="ode">
-      <max_step_size>0.001</max_step_size>
+      <max_step_size>0.01</max_step_size>
       <real_time_factor>1.0</real_time_factor>
     </physics>
     <plugin
@@ -32,17 +32,60 @@
       name="ignition::gazebo::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
-     <plugin
-      filename="ignition-gazebo-buoyancy-system"
-      name="ignition::gazebo::systems::Buoyancy">
-      <graded_buoyancy>
-        <default_density>1000</default_density>
-        <density_change>
-          <above_depth>0</above_depth>
-          <density>1</density>
-        </density_change>
+    <plugin filename="ignition-gazebo-buoyancy-system"
+        name="ignition::gazebo::systems::Buoyancy">
+        <!--<graded_buoyancy>
+          <default_density>1000</default_density>
+          <density_change>
+            <above_depth>0</above_depth>
+            <density>10</density>
+          </density_change>
+          <density_change>
+            <above_depth>1</above_depth>
+            <density>1</density>
+          </density_change>
+        </graded_buoyancy>-->
+
+        <graded_buoyancy>
+          <default_density>1000</default_density>
+          <density_change>
+            <above_depth>0</above_depth>
+            <density>1</density>
+          </density_change>
       </graded_buoyancy>
     </plugin>
+
+    <plugin
+      filename="ignition-gazebo-contact-system"
+      name="ignition::gazebo::systems::Contact">
+    </plugin>
+
+    <plugin
+      filename="ignition-gazebo-forcetorque-system"
+      name="ignition::gazebo::systems::ForceTorque">
+    </plugin>
+
+    <!--<plugin filename="ignition-gazebo-hydrodynamics-system" name="ignition::gazebo::systems::Hydrodynamics">       
+      <link_name>base_link</link_name>
+      <xDotU>-5.5</xDotU>
+      <yDotV>-12.7</yDotV>
+      <zDotW>-14.57</zDotW>
+      <kDotP>-0.12</kDotP>
+      <mDotQ>-0.12</mDotQ>
+      <nDotR>-0.12</nDotR>   
+      <xUabsU>-33.800000000000004</xUabsU>
+      <yVabsV>-54.26875</yVabsV>
+      <zWabsW>-73.37135</zWabsW>
+      <kPabsP>-40.0</kPabsP>
+      <mQabsQ>-40.0</mQabsQ>
+      <nRabsR>-40.0</nRabsR>
+      <xU>-25.15</xU>
+      <yV>-7.364</yV>
+      <zW>-17.955</zW>
+      <kP>-10.888</kP>
+      <mQ>-20.761</mQ>
+      <nR>-3.744</nR>                   
+    </plugin> -->
 
     <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
@@ -59,6 +102,7 @@
     </light>
 
     <model name="water_plane">
+      <pose>0 0 0 0 0 0</pose>
       <static>true</static>
       <link name="link">
         <visual name="water_plane">
