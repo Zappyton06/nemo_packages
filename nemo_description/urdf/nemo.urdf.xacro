@@ -7,5 +7,52 @@
     <xacro:include filename="thruster_cw.xacro"/>
     <xacro:include filename="thruster_ccw.xacro"/>
 
-
+    <gazebo>
+        <plugin filename="ignition-gazebo-joint-state-publisher-system" name="ignition::gazebo::systems::JointStatePublisher"/>
+        
+        <plugin
+            filename="ignition-gazebo-odometry-publisher-system"
+            name="ignition::gazebo::systems::OdometryPublisher">
+            <odom_frame>world</odom_frame>
+            <dimensions>3</dimensions>
+            <robot_base_frame>base_link</robot_base_frame>
+            <odom_publish_frequency>20</odom_publish_frequency>
+        </plugin>
+        
+        <plugin
+            filename="ignition-gazebo-pose-publisher-system"
+            name="ignition::gazebo::systems::PosePublisher">
+            <publish_link_pose>false</publish_link_pose>
+            <publish_collision_pose>false</publish_collision_pose>
+            <publish_visual_pose>false</publish_visual_pose>
+            <publish_nested_model_pose>true</publish_nested_model_pose>
+        </plugin>
+        <plugin
+        filename="ignition-gazebo-hydrodynamics-system"
+        name="ignition::gazebo::systems::Hydrodynamics">
+            <link_name>base_link</link_name>
+            <water_density>1000.0</water_density>
+            <!-- Added mass: -->
+            <xDotU>0</xDotU>
+            <yDotV>0</yDotV>
+            <zDotW>0</zDotW>
+            <kDotP>0</kDotP>
+            <mDotQ>0</mDotQ>
+            <nDotR>0</nDotR>
+            <!-- First order stability derivative: -->
+            <xU>0</xU>
+            <yV>0</yV>
+            <zW>0</zW>
+            <kP>0</kP>
+            <mQ>0</mQ>
+            <nR>0</nR>
+            <!-- Second order stability derivative: -->
+            <xUabsU>-58.42</xUabsU>
+            <yVabsV>-55.137</yVabsV>
+            <zWabsW>-124.818</zWabsW>
+            <kPabsP>-4.0</kPabsP>
+            <mQabsQ>-4.0</mQabsQ>
+            <nRabsR>-4.0</nRabsR>
+        </plugin>
+    </gazebo>
 </robot>
