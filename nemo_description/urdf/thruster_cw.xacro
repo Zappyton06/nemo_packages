@@ -12,6 +12,15 @@
                 <mass value="0.010685972005449422"/>
                 <inertia ixx="4.709701538510022e-06" ixy="0.0" ixz="0.0" iyy="4.709701538508585e-06" iyz="0.0" izz="3.424149260721648e-06"/>
             </inertial>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+
+                <geometry>
+                    <cylinder radius="0.02" length="0.05"/>
+                </geometry>
+                
+            </collision>
         </link>
 
         <joint name="thruster${thruster_id}" type="continuous">
@@ -19,7 +28,7 @@
             <axis xyz="0 0 1" />
             <parent link="base_link" />
             <child link="${ns}/thruster${thruster_id}" />
-            <limits effort="-1" velocity="-1"/>
+            <limits effort="0.5" velocity="5.0"/>
         </joint>
 
         <gazebo>
