@@ -21,7 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'calibration_node = joystick_pacs.joystick_calibration_node:main',
-            'joy_node = joystick_pacs.joystick_publisher:main'
+            'joy_node = joystick_pacs.JoyPublisher:main',
+            'serialPub = joystick_pacs.serialPublisher:main'
         ],
     },
 )
