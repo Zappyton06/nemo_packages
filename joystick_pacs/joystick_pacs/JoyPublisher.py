@@ -1,11 +1,13 @@
 import rclpy
 from rclpy.node import Node
-import nemo_interfaces
 from nemo_interfaces.msg import RovCommands
+import pygame
+from joystick_pacs.calibrationNode import JoystickCalibrationNode
 
 import pygame
 
-class joystickLibWrapper:
+
+class joystickReadWrapper:
     def __init__(self,controller_id):
         pygame.init()
         pygame.joystick.init()
@@ -28,8 +30,8 @@ class joystickLibWrapper:
         #pause development for a while
         pass
 
-class joystickPublisher(Node):
-    #just a bunch of constants and some scaffolding
+#ros2 master Node for Joystick
+class joyMasterNode(Node):
     def __init__(self):
         super().__init__("joystickPublisher")
 
@@ -40,7 +42,7 @@ class joystickPublisher(Node):
         self.declare_parameter('swayInput', [0.99,-0.01,-1.00])
 
         #provision to read output parameters from a yaml file
-        self.declare_parameter('surgeVelVector', [-1.50,0.00,1.50]) 
+        self.declare_parameter('surgeVelVector', [-1.00,0.00,1.00]) 
         self.declare_parameter('yawVelVector', [-10.00,0.00,10.00]) #in degrees/sec
         self.declare_parameter('heaveVelVector', [-0.50,0.00,0.50]) #dive / surface velocity
         self.declare_parameter('swayVelVector', [-1.00,0.00,1.00])
@@ -69,17 +71,33 @@ class joystickPublisher(Node):
             'HEAVE':self.heaveOutVector,
             'SWAY':self.swayOutVector
         }
+
         #change axis assignements pre deployements - primitive as of now
         self.invertStatus = {'SURGE':True,'HEAVE':True,'SWAY':True,"YAW":True}
         self.axisIdMap = {0:'YAW',1:'SURGE',3:'SWAY',4:'HEAVE'}
-
-        self.commandPublisher = self.create_publisher(RovCommands,'target_cmd',10)
+        self.startValuePublisher = False
+        self.commandPublisher = self.create_publisher(RovCommands,'/input_cmd',10)
         self.commandTimer = self.create_timer(0.1,self.publish_cmd)
 
-        self.joyWrapper = joystickLibWrapper(0)
-    
+        self.joyWrapper = joystickReadWrapper(0)
+
+        self.userInput = input("Enter Y if you want to start Calibration and N if you don't")
+        if self.userInput == "Y":
+            try:
+                calibrationNode = JoystickCalibrationNode()
+                self.startValuePublisher = True
+            except:
+                return
+        else:
+            self.startValuePublisher = True
+
+
     #publish function
     def publish_cmd(self):
+        if not self.startValuePublisher:
+            # Skip publishing
+            return
+        
         msg = RovCommands()
         msg.surge = float(self.normalizeJoystickInput(1))
         msg.yaw = float(self.normalizeJoystickInput(0))
@@ -97,7 +115,6 @@ class joystickPublisher(Node):
         axis_inversion_status = self.invertStatus.get(axis_name)
         input_calibrated_vector = self.inputAxisVectorMap.get(axis_name)
         output_velocity_vector = self.outputAxisVectorMap.get(axis_name)
-
 
         if axis_inversion_status is True:
             input_calibrated_vector = input_calibrated_vector[::-1]
@@ -123,12 +140,13 @@ class joystickPublisher(Node):
         rawAxisVal = self.joyWrapper.readAxis(axis_id)
         normalizedAxisVal = self.mapFunc(rawAxisVal,axis_id)
 
-        return normalizedAxisVal
+        return rawAxisVal          
+
 
 def main(args=None):
     rclpy.init(args=args)
 
-    node = joystickPublisher()
+    node = joyMasterNode()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
@@ -137,5 +155,5 @@ def main(args=None):
         node.destroy_node()
         rclpy.shutdown()
 
-if __name__ == '__main__':
-    main()     
+if __name__ == "__main__":
+    main()
