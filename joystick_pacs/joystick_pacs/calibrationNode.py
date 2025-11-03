@@ -58,7 +58,7 @@ class joystickCalibrator:
         #for finding the average value for the stick in the minimum position
         if start_input3 == '':
             min_avg = self._calculate_average(axis_id,self.calibrationDuration)
-            print(f"Averag value of Maximum is {min_avg} \n")
+            print(f"Averag value of Minimum is {min_avg} \n")
 
         return [min_avg, centre_avg, max_avg]
     
